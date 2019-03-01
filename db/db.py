@@ -4,6 +4,8 @@ import time
 from flask import g
 
 DATABASE = 'database.db'
+PAGESIZE = 5
+
 def get_db():
     db = getattr(g, '_database', None)
     if db is None:
@@ -53,6 +55,15 @@ def get_article(blog_id):
     cur = conn.cursor()
     cur.execute("select * from article where id = ?", (blog_id,))
     r = cur.fetchone()
+    print(r)
+    return r
+
+def list_articles(page_number): #page_number start from 0
+    offset = page_number * PAGESIZE
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("select id, title, summary, ralease, time_created, time_last_modified from article order by time_created desc LIMIT ? OFFSET ?", (PAGESIZE, offset))
+    r = cur.fetchall()
     print(r)
     return r
 

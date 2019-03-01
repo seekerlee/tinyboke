@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+        <title>{{ title if title != None else "文章标题"}}</title>
+    </head>
+    <body>
+        <div class="container hero">
+            <h1>我的博客</h1>
+            <p>我是怎样怎样的</p>
+        </div>
+        <div class="container">
+            {% for article in articles %}
+            <div>
+                <h2>{{ article.title }}</h2>
+                <article>
+                    {{ article.summary }}
+                </article>
+            </div>
+            {% endfor %}
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script>
+        </script>
+    </body>
+</html>
