@@ -45,7 +45,7 @@ def save_blog(blog_id):
     jjson = request.get_json()
     # save to database
     update_article(blog_id, jjson['title'], jjson['summary'], jjson['content'], jjson['release'])
-    return 's'
+    return jsonify({"message" : "article updated"})
 
 @app.route('/password', methods=['POST'])
 def change_password():
@@ -62,7 +62,7 @@ def change_password():
             print('pass match')
             new_pass_hashed = bcrypt.hashpw(pass_new.encode('utf-8'), bcrypt.gensalt())
             set_config('password', new_pass_hashed)
-            return jsonify({"message" : "password updated"}), 200
+            return jsonify({"message" : "password updated"})
         else:
             print('pass not match')
             return jsonify({"error" : "password does not match"}), 403
