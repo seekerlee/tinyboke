@@ -3,7 +3,7 @@ from flask import render_template
 from flask import request
 from flask import g
 
-from db.db import new_article, update_article
+from db.db import new_article, update_article, get_article
 
 app = Flask(__name__)
 
@@ -23,11 +23,14 @@ def create_blog():
 @app.route('/blog/<int:blog_id>')
 def show_blog(blog_id):
     edit = request.args.get('edit')
+    article = get_article(blog_id)
+    title = article["title"]
+    content = article["content"]
     if edit is not None:
         print('editing blog...')
         print('editing existing blog...')
         # get blog from database
-        return render_template('post-edit.jinja')
+        return render_template('post-edit.jinja', title=title, content=content)
     else:
         print('reading blog...')
         return 'blog %d' % blog_id
