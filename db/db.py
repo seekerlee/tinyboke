@@ -15,7 +15,7 @@ def get_db():
 
 def check_tables():
     conn = sqlite3.connect(DATABASE)
-    TABLE_ARTICLE = """
+    TABLE_INIT = """
     CREATE TABLE if not exists "article" (
         "id" INTEGER,
         "title" TEXT,
@@ -25,9 +25,17 @@ def check_tables():
         "time_created" INTEGER,
         "time_last_modified" INTEGER,
         PRIMARY KEY("id")
-    )"""
+    );
+    CREATE TABLE if not exists "config" (
+        "key" TEXT UNIQUE,
+        "value" TEXT
+    );
+    insert or ignore into config values ('password', null);
+    insert or ignore into config values ('site_name', 'My Blog');
+    insert or ignore into config values ('site_desc', 'This is my blog');
+    """
     cur = conn.cursor()
-    cur.execute(TABLE_ARTICLE)
+    cur.executescript(TABLE_INIT)
     conn.commit()
     conn.close()
 
@@ -67,11 +75,16 @@ def list_articles(page_number): #page_number start from 0
     print(r)
     return r
 
+def get_config(key):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("select value from config where key = ?", (key,))
+    r = cur.fetchone()
+    return r["value"]
 
-# def close_connection():
-#     print('close_connection')
-#     conn = get_db()
-#     if conn is not None:
-#         conn.close()
-    
-# atexit.register(close_connection)
+def set_config(key, value):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("update config set value = ? where key = ?", (value, key))
+    conn.commit()
+

@@ -1,16 +1,19 @@
-from flask import Flask, url_for, redirect
+from flask import Flask, url_for, redirect, jsonify
 from flask import render_template
 from flask import request
 from flask import g
+import bcrypt
 
-from db.db import new_article, update_article, get_article, list_articles
+from db.db import new_article, update_article, get_article, list_articles, get_config, set_config
 
 app = Flask(__name__)
 
 # pages:
 @app.route('/')
 def hello_world():
-    articles = list_articles(0)
+    page_number = request.args.get('page', 1, type = int) # page_number from 1
+    print(page_number)
+    articles = list_articles(page_number - 1)
     return render_template('index.jinja', articles=articles)
 
 @app.route('/blog/create')
@@ -43,6 +46,32 @@ def save_blog(blog_id):
     # save to database
     update_article(blog_id, jjson['title'], jjson['summary'], jjson['content'], jjson['release'])
     return 's'
+
+@app.route('/password', methods=['POST'])
+def change_password():
+    print('change_password: ')
+    jjson = request.get_json()
+    pass_new = jjson['passwordNew']
+    pass_hashed = get_config('password')
+    print('pass_new: ' + pass_new)
+    print('pass_hashed: ' + str(pass_hashed))
+    if ('passwordCurrent' in jjson):
+        pass_input = jjson['passwordCurrent']
+        print('pass_input: ' + pass_input)
+        if bcrypt.checkpw(pass_input.encode('utf-8'), pass_hashed):
+            print('pass match')
+            new_pass_hashed = bcrypt.hashpw(pass_new.encode('utf-8'), bcrypt.gensalt())
+            set_config('password', new_pass_hashed)
+            return jsonify({"message" : "password updated"}), 200
+        else:
+            print('pass not match')
+            return jsonify({"error" : "password does not match"}), 403
+    elif pass_hashed is None: # when server init there's no password
+        new_pass_hashed = bcrypt.hashpw(pass_new.encode('utf-8'), bcrypt.gensalt())
+        set_config('password', new_pass_hashed)
+        return jsonify({"message" : "password updated"}), 200
+    else:
+        return jsonify({"error" : "no current password provided"}), 403
 
 @app.teardown_appcontext
 def close_connection(exception):

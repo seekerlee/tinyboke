@@ -18,7 +18,7 @@
             <div>
                 <h2>{{ article.title }}</h2>
                 <article>
-                    {{ article.summary }}
+                    {{ article.summary | trim }}
                 </article>
             </div>
             {% endfor %}
