@@ -65,18 +65,16 @@ def show_blog(blog_id):
     edit = request.args.get('edit')
     # get blog from database
     article = get_article(blog_id)
-    title = article["title"]
-    content = article["content"]
     if edit is not None:
         if session.get('login') == True:
             print('editing blog...')
             print('editing existing blog...')
-            return render_template('article-edit.jinja', title=title, content=content)
+            return render_template('article-edit.jinja', article=article)
         else:
             return redirect(url_for('login'))
     else:
         print('reading blog...')
-        return render_template('article-view.jinja', title=title, content=content)
+        return render_template('article-view.jinja', article=article, logined=session.get('login') == True)
 
 # api:
 @app.route('/blog/<int:blog_id>', methods=['POST'])
