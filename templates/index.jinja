@@ -6,26 +6,29 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+        <link rel="stylesheet" href="/static/common.css">
+        <link rel="stylesheet" href="/static/index.css">
         <title>{{ title if title != None else "文章标题"}}</title>
     </head>
     <body>
-        <div class="container hero">
+        <div class="hero">
             <h1>{{ site_name }}</h1>
             <p>{{ site_desc }}</p>
         </div>
-        <div class="container">
+        <div class="container blogs">
             {% for article in articles %}
-            <div>
-                <h2>{{ article.title }}</h2>
-                {% if logined %}
-                <a class="btn btn-link" href="/blog/{{article.id}}?edit" role="button">编辑</a>
-                {% endif %}
-                <article>
+            <div class="blog">
+                <h2><a href="/blog/{{article.id}}">{{ article.title }}</a></h2>
+                <hr>
+                <article class="summary">
                     {{ article.summary | trim }}
                 </article>
             </div>
             {% endfor %}
         </div>
+        <footer>
+            <div>@2019 Simon Li</div>
+        </footer>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
