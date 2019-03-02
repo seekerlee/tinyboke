@@ -13,11 +13,14 @@
     <body>
         <div class="container">
             <h1>{{ article.title if article.title != None }}</h1>
-            <div class=meta><span>{{ article.time_created | readable_time}}</span><a class="gohome" href="/">首页</a></div>
+            <div class=meta>
+                <span>{{ article.time_created | readable_time}}</span>
+                <a class="gohome" href="/">首页</a>
+                {% if logined %}
+                <a class="gohome" href="/blog/{{article.id}}?edit">编辑</a>
+                {% endif %}
+            </div>
             <article>{{ article.content if article.content != None }}</article>
-            {% if logined %}
-            <a class="btn btn-link" href="/blog/{{article.id}}?edit" role="button">编辑</a>
-            {% endif %}
         </div>
         {% include 'footer.jinja' %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
