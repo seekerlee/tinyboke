@@ -12,3 +12,7 @@ footer {
     padding: 20px;
     margin-top: 5rem;
 }
+::selection {
+    color: white;
+    background-color: black;
+} 
