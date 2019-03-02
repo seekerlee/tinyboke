@@ -1,0 +1,18 @@
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+h1 {
+    text-align: center;
+    padding: 2rem;
+}
+.meta {
+    text-align: center;
+    margin: 1rem auto;
+    color: #555;
+}
+.meta .gohome {
+    color: #555;
+    text-decoration: none;
+    margin: 0 1rem;
+}

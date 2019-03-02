@@ -7,17 +7,19 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
         <link rel="stylesheet" href="/static/common.css">
-        <link rel="stylesheet" href="/static/index.css">
+        <link rel="stylesheet" href="/static/article.css">
         <title>{{ article.title if article.title != None else "文章标题"}}</title>
     </head>
     <body>
         <div class="container">
             <h1>{{ article.title if article.title != None }}</h1>
+            <div class=meta><span>{{ article.time_created | readable_time}}</span><a class="gohome" href="/">首页</a></div>
             <article>{{ article.content if article.content != None }}</article>
             {% if logined %}
             <a class="btn btn-link" href="/blog/{{article.id}}?edit" role="button">编辑</a>
             {% endif %}
         </div>
+        {% include 'footer.jinja' %}
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
