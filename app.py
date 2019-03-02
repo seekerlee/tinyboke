@@ -2,7 +2,7 @@ from flask import Flask, url_for, redirect, jsonify, session
 from flask import render_template
 from flask import request
 from flask import g
-from datetime import timedelta
+from datetime import timedelta, datetime
 import os
 import bcrypt
 
@@ -137,3 +137,7 @@ def close_connection(exception):
     db = getattr(g, '_database', None)
     if db is not None:
         db.close()
+
+@app.template_filter('readable_time')
+def readable_time(timestamp):
+    return datetime.utcfromtimestamp(timestamp).strftime('%Y-%m-%d')
