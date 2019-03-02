@@ -21,7 +21,7 @@ def check_tables():
         "title" TEXT,
         "summary" TEXT,
         "content" TEXT,
-        "ralease" INTEGER DEFAULT 0,
+        "release" INTEGER DEFAULT 0,
         "time_created" INTEGER,
         "time_last_modified" INTEGER,
         PRIMARY KEY("id")
@@ -51,11 +51,17 @@ def new_article():
     conn.commit()
     return new_id
 
+def delete_article(blog_id):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("delete from article where id = ?", (blog_id,))
+    conn.commit()
+
 def update_article(blog_id, title, summary, content, release=False):
     print(title)
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("update article set title = ?, summary = ?, content = ?, ralease = ?, time_last_modified = ? where id = ?", (title, summary, content, release, int(time.time()), blog_id))
+    cur.execute("update article set title = ?, summary = ?, content = ?, release = ?, time_last_modified = ? where id = ?", (title, summary, content, release, int(time.time()), blog_id))
     conn.commit()
 
 def get_article(blog_id):
@@ -66,11 +72,14 @@ def get_article(blog_id):
     print(r)
     return r
 
-def list_articles(page_number): #page_number start from 0
+def list_articles(page_number, filter_release=True): #page_number start from 0
     offset = page_number * PAGESIZE
     conn = get_db()
     cur = conn.cursor()
-    cur.execute("select id, title, summary, ralease, time_created, time_last_modified from article order by time_created desc LIMIT ? OFFSET ?", (PAGESIZE, offset))
+    if filter_release:
+        cur.execute("select id, title, summary, release, time_created, time_last_modified from article where release = 1 order by time_created desc LIMIT ? OFFSET ?", (PAGESIZE, offset))
+    else:
+        cur.execute("select id, title, summary, release, time_created, time_last_modified from article order by time_created desc LIMIT ? OFFSET ?", (PAGESIZE, offset))
     r = cur.fetchall()
     print(r)
     return r

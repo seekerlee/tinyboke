@@ -6,30 +6,21 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
-        <title>{{ title if title != None else "文章标题"}}</title>
+        <title>登陆</title>
     </head>
     <body>
-        <div class="container hero">
-            <h1>{{ site_name }}</h1>
-            <p>{{ site_desc }}</p>
-        </div>
         <div class="container">
-            {% for article in articles %}
-            <div>
-                <h2>{{ article.title }}</h2>
-                {% if logined %}
-                <a class="btn btn-link" href="/blog/{{article.id}}?edit" role="button">编辑</a>
-                {% endif %}
-                <article>
-                    {{ article.summary | trim }}
-                </article>
-            </div>
-            {% endfor %}
+            <div>{{ message if message != None}}</div>
+            <form method="post">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+                </div>
+                <button type="submit" class="btn btn-primary">登陆</button>
+            </form>
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-        <script>
-        </script>
     </body>
 </html>

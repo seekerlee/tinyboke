@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="form-group">
+                <input id="site-name" type="text" class="form-control" value="{{ site_name }}" placeholder="网站名">
+                <label for="site-desc">网站描述</label>
+                <textarea class="form-control" id="site-desc" rows="3">{{ site_desc }}</textarea>
+                <button id="save" type="submit" class="btn btn-primary">保存</button>
+            </div>
+            <div class="form-group">
+                <input id="password-current" type="password" class="form-control" placeholder="当前密码">
+                <input id="password-new" type="password" class="form-control" placeholder="新密码">
+                <button id="change-pwd" type="submit" class="btn btn-primary">修改密码</button>
+            </div>
+            <div class="form-group">
+                <a href="/logout" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">退出登录</a>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script>
+            $('#change-pwd').click(() => {
+                let passwordCurrent = $('#password-current').val()
+                let passwordNew = $('#password-new').val()
+                $.ajax({
+                    type: "POST",
+                    url: "/password",
+                    data: JSON.stringify({
+                        passwordNew,
+                        passwordCurrent
+                    }),
+                    success: d => {
+                        alert("修改成功")
+                    },
+                    error: e => {
+                        alert("修改失败")
+                    },
+                    contentType: 'application/json',
+                });
+            })
+            $('#save').click(() => {
+                let siteName = $('#site-name').val()
+                let siteDesc = $('#site-desc').val()
+                $.ajax({
+                    type: "POST",
+                    url: "/config",
+                    data: JSON.stringify({
+                        siteName,
+                        siteDesc,
+                    }),
+                    success: d => {
+                        alert("保存成功")
+                    },
+                    error: e => {
+                        alert("保存失败")
+                    },
+                    contentType: 'application/json',
+                });
+            })
+        </script>
+    </body>
+</html>
