@@ -104,7 +104,7 @@ def change_password():
     pass_hashed = get_config('password')
     print('pass_new: ' + pass_new)
     print('pass_hashed: ' + str(pass_hashed))
-    if ('passwordCurrent' in jjson):
+    if ('passwordCurrent' in jjson and pass_hashed is not None):
         pass_input = jjson['passwordCurrent']
         print('pass_input: ' + pass_input)
         if bcrypt.checkpw(pass_input.encode('utf-8'), pass_hashed):
