@@ -25,7 +25,8 @@ def index():
 
 @app.route('/console')
 def console():
-    if session.get('login') != True:
+    pass_hashed = get_config('password')
+    if session.get('login') != True and pass_hashed is not None:
         return redirect(url_for('login'))
     site_name = get_config("site_name")
     site_desc = get_config("site_desc")
